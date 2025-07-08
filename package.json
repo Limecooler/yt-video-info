@@ -1,5 +1,5 @@
 {
-  "name": "yt-info-mcp",
+  "name": "@limecooler/yt-info-mcp",
   "version": "1.0.0",
   "description": "MCP server for retrieving YouTube video information and transcripts",
   "main": "dist/index.js",

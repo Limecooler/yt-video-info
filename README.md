@@ -57,7 +57,7 @@ Add the following to your Claude Desktop configuration file:
   "mcpServers": {
     "youtube-info": {
       "command": "npx",
-      "args": ["-y", "yt-info-mcp"]
+      "args": ["-y", "@limecooler/yt-info-mcp"]
     }
   }
 }
