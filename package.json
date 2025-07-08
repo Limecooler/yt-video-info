@@ -1,11 +1,11 @@
 {
-  "name": "@limecooler/youtube-info-mcp",
+  "name": "yt-info-mcp",
   "version": "1.0.0",
   "description": "MCP server for retrieving YouTube video information and transcripts",
   "main": "dist/index.js",
   "type": "module",
   "bin": {
-    "youtube-info-mcp": "./dist/index.js"
+    "yt-info-mcp": "./dist/index.js"
   },
   "scripts": {
     "build": "tsc",
