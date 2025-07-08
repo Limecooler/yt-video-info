@@ -7,6 +7,15 @@ import { z } from 'zod';
 
 const USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
 
+// InnerTube API configuration
+const INNERTUBE_API_URL = 'https://www.youtube.com/youtubei/v1/player';
+const INNERTUBE_CONTEXT = {
+  client: {
+    clientName: 'ANDROID',
+    clientVersion: '20.10.38'
+  }
+};
+
 export async function fetchVideoInfo(videoId: string): Promise<{ metadata: VideoMetadata; captionTracks: CaptionTrack[] }> {
   // Validate video ID format with Zod
   try {
@@ -52,7 +61,21 @@ export async function fetchVideoInfo(videoId: string): Promise<{ metadata: Video
       const html = await response.text();
       return { html, response };
     }, { maxRetries: 3, baseDelay: 1000 });
-    const playerResponse = extractPlayerResponse(html);
+    
+    // First try to extract InnerTube API key and use InnerTube API
+    const apiKey = extractInnerTubeApiKey(html);
+    let playerResponse: YouTubePlayerResponse | null = null;
+    
+    if (apiKey) {
+      logger.debug('Attempting to fetch via InnerTube API');
+      playerResponse = await fetchViaInnerTube(videoId, apiKey);
+    }
+    
+    // Fall back to extracting from HTML if InnerTube didn't work
+    if (!playerResponse) {
+      logger.debug('Falling back to HTML extraction');
+      playerResponse = extractPlayerResponse(html);
+    }
 
     if (!playerResponse) {
       throw new YouTubeError('Could not extract video data from page', 'PARSE_ERROR');
@@ -220,6 +243,66 @@ function extractPlayerResponse(html: string): YouTubePlayerResponse | null {
   }
 
   return null;
+}
+
+function extractInnerTubeApiKey(html: string): string | null {
+  // Try multiple patterns to extract the API key
+  const patterns = [
+    /"INNERTUBE_API_KEY":"([^"]+)"/,
+    /"innertubeApiKey":"([^"]+)"/,
+    /['"]INNERTUBE_API_KEY['"]:\s*['"]([^'"]+)['"]/,
+  ];
+
+  for (const pattern of patterns) {
+    const match = html.match(pattern);
+    if (match && match[1]) {
+      logger.debug(`Found InnerTube API key: ${match[1].substring(0, 10)}...`);
+      return match[1];
+    }
+  }
+
+  logger.warn('Could not extract InnerTube API key');
+  return null;
+}
+
+async function fetchViaInnerTube(videoId: string, apiKey: string): Promise<YouTubePlayerResponse | null> {
+  const url = `${INNERTUBE_API_URL}?key=${apiKey}`;
+  
+  try {
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'User-Agent': USER_AGENT,
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Accept-Language': 'en-US,en;q=0.9',
+        'Origin': 'https://www.youtube.com',
+        'Referer': `https://www.youtube.com/watch?v=${videoId}`,
+      },
+      body: JSON.stringify({
+        context: INNERTUBE_CONTEXT,
+        videoId: videoId,
+      }),
+    });
+
+    if (!response.ok) {
+      logger.warn(`InnerTube API returned status ${response.status}`);
+      return null;
+    }
+
+    const data = await response.json();
+    
+    // Validate the response with Zod
+    try {
+      return YouTubePlayerResponseSchema.parse(data);
+    } catch (e) {
+      logger.warn('InnerTube response validation failed');
+      return null;
+    }
+  } catch (error) {
+    logger.error('InnerTube API request failed:', error);
+    return null;
+  }
 }
 
 function extractMetadata(playerResponse: YouTubePlayerResponse): VideoMetadata {

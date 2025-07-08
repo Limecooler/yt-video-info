@@ -151,11 +151,6 @@ MCP_DEBUG=true npm start
 ```
 
 ## Limitations
-
-### Transcript Fetching Not Working
-**Important**: Due to YouTube's protective measures, transcript fetching currently returns empty responses even when captions exist. The server will still successfully return video metadata (title, author, duration, views, description).
-
-### Other Limitations
 - Relies on YouTube's web interface structure, which may change
 - Cannot transcribe audio - only downloads existing captions
 - May be rate-limited by YouTube if used excessively

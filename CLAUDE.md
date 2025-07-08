@@ -66,12 +66,12 @@ A lightweight MCP (Model Context Protocol) server that retrieves YouTube video i
 
 ## Known Limitations
 
-### Transcript Fetching
-- **Primary Issue**: YouTube's caption URLs consistently return empty responses (status 200 but 0 bytes)
-- **Root Cause**: YouTube implements strong protective measures against automated caption downloads
-- **Behavior**: The server will still return video metadata successfully, with an error message for transcripts
-- **Testing Results**: Confirmed empty responses across all tested videos, user agents, and formats (json3, srv3, vtt)
-- **Workaround**: Currently no reliable workaround without using YouTube API with API keys or external tools like yt-dlp
+### Transcript Fetching (Fixed)
+- **Solution**: Now uses YouTube's InnerTube API (the same API YouTube's mobile apps use)
+- **Implementation**: Extracts INNERTUBE_API_KEY from page HTML and makes authenticated requests
+- **Android Client**: Uses Android client context for better reliability
+- **Fallback**: Falls back to direct HTML extraction if InnerTube fails
+- **Success Rate**: Much more reliable than direct caption URL fetching
 
 ### Other Limitations
 - The scraping approach depends on YouTube's HTML structure, which may change
@@ -152,3 +152,13 @@ If improving transcript support:
   "error": "string (if transcript unavailable)"
 }
 ```
+
+## Recent Changes
+
+### InnerTube API Integration (2025-07-08)
+- Added YouTube's InnerTube API support for more reliable transcript fetching
+- Extracts INNERTUBE_API_KEY from YouTube page HTML
+- Makes authenticated POST requests to `/youtubei/v1/player` endpoint
+- Uses Android client context (`clientName: "ANDROID"`) for better access
+- Falls back to HTML extraction if InnerTube fails
+- Significantly improves transcript fetching success rate
