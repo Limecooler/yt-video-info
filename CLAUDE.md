@@ -67,10 +67,11 @@ A lightweight MCP (Model Context Protocol) server that retrieves YouTube video i
 ## Known Limitations
 
 ### Transcript Fetching
-- **Primary Issue**: YouTube's caption URLs often return empty responses (status 200 but 0 bytes)
-- **Root Cause**: YouTube implements protective measures against automated caption downloads
+- **Primary Issue**: YouTube's caption URLs consistently return empty responses (status 200 but 0 bytes)
+- **Root Cause**: YouTube implements strong protective measures against automated caption downloads
 - **Behavior**: The server will still return video metadata successfully, with an error message for transcripts
-- **Workaround**: Currently no reliable workaround without using API keys or external tools
+- **Testing Results**: Confirmed empty responses across all tested videos, user agents, and formats (json3, srv3, vtt)
+- **Workaround**: Currently no reliable workaround without using YouTube API with API keys or external tools like yt-dlp
 
 ### Other Limitations
 - The scraping approach depends on YouTube's HTML structure, which may change
