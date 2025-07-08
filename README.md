@@ -18,6 +18,12 @@ A lightweight MCP server that extracts YouTube video metadata and transcripts th
 
 ## Installation
 
+### Option 1: Direct Usage with npx (Recommended)
+
+No installation needed! You can run the server directly using npx.
+
+### Option 2: Local Installation
+
 1. Clone this repository:
 ```bash
 git clone https://github.com/Limecooler/yt-video-info.git
@@ -38,13 +44,26 @@ npm run build
 
 Add the following to your Claude Desktop configuration file:
 
-### macOS
-Location: `~/Library/Application Support/Claude/claude_desktop_config.json`
+### Configuration File Locations
 
-### Windows
-Location: `%APPDATA%\Claude\claude_desktop_config.json`
+- **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
+- **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
+- **Linux**: `~/.config/Claude/claude_desktop_config.json`
 
-### Configuration
+### Option 1: Using npx (Recommended - No Installation Required)
+
+```json
+{
+  "mcpServers": {
+    "youtube-info": {
+      "command": "npx",
+      "args": ["-y", "@limecooler/youtube-info-mcp"]
+    }
+  }
+}
+```
+
+### Option 2: Local Installation
 
 ```json
 {
@@ -52,19 +71,6 @@ Location: `%APPDATA%\Claude\claude_desktop_config.json`
     "youtube-info": {
       "command": "node",
       "args": ["/absolute/path/to/yt-video-info/dist/index.js"]
-    }
-  }
-}
-```
-
-Or if you prefer to run with tsx directly:
-
-```json
-{
-  "mcpServers": {
-    "youtube-info": {
-      "command": "npx",
-      "args": ["tsx", "/absolute/path/to/yt-video-info/src/index.ts"]
     }
   }
 }

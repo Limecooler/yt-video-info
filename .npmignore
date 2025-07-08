@@ -1,0 +1,36 @@
+# Source files
+src/
+*.ts
+!dist/**/*.d.ts
+
+# Test files
+test-*.js
+__tests__/
+*.test.*
+*.spec.*
+
+# Development files
+.vscode/
+.idea/
+*.log
+.DS_Store
+
+# Git
+.git/
+.gitignore
+
+# TypeScript config
+tsconfig.json
+
+# Claude AI
+CLAUDE.md
+.claude/
+
+# Build artifacts (except dist)
+*.tsbuildinfo
+
+# Documentation sources
+docs/
+
+# Examples
+examples/
