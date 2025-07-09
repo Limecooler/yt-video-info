@@ -1,6 +1,6 @@
 {
   "name": "@limecooler/yt-info-mcp",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "MCP server for retrieving YouTube video information and transcripts",
   "main": "dist/index.js",
   "type": "module",
@@ -8,7 +8,7 @@
     "yt-info-mcp": "./dist/index.js"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && chmod +x dist/index.js",
     "start": "tsx src/index.ts",
     "dev": "tsx watch src/index.ts",
     "test": "node test-comprehensive.js",
