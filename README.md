@@ -22,7 +22,13 @@ A lightweight MCP server that extracts YouTube video metadata and transcripts th
 
 No installation needed! You can run the server directly using npx.
 
-### Option 2: Local Installation
+### Option 2: Install from npm
+
+```bash
+npm install -g @limecooler/yt-info-mcp
+```
+
+### Option 3: Local Installation
 
 1. Clone this repository:
 ```bash
@@ -78,10 +84,38 @@ Add the following to your Claude Desktop configuration file:
 
 ## Usage
 
+### Using with Claude Desktop
+
 Once configured, you can use the tool in Claude Desktop:
 
 ```
 Please get information from YouTube video dQw4w9WgXcQ
+```
+
+### Using from npm (Command Line)
+
+If you installed globally via npm:
+
+```bash
+# Run the MCP server directly
+yt-info-mcp
+
+# Or use with a tool that supports MCP
+npx @modelcontextprotocol/cli connect yt-info-mcp
+```
+
+### Using as a Library
+
+```javascript
+import { fetchVideoInfo, fetchTranscript } from '@limecooler/yt-info-mcp';
+
+// Get video information
+const { metadata, captionTracks } = await fetchVideoInfo('dQw4w9WgXcQ');
+
+// Fetch transcript if available
+if (captionTracks.length > 0) {
+  const transcript = await fetchTranscript(captionTracks[0]);
+}
 ```
 
 The tool will return:
@@ -155,6 +189,61 @@ MCP_DEBUG=true npm start
 - Cannot transcribe audio - only downloads existing captions
 - May be rate-limited by YouTube if used excessively
 - Age-restricted or private videos cannot be accessed
+
+## Built with Claude Code
+
+This entire project was developed using [Claude Code](https://claude.ai/code), Anthropic's AI-powered coding assistant. Claude Code enables rapid development with built-in best practices and comprehensive testing.
+
+### Making Changes with Claude Code
+
+To contribute or modify this repository using Claude Code:
+
+1. **Install Claude Code** (if you haven't already):
+   ```bash
+   npm install -g @anthropic-ai/claude-code
+   ```
+
+2. **Clone and open the repository**:
+   ```bash
+   git clone https://github.com/Limecooler/yt-video-info.git
+   cd yt-video-info
+   claude-code
+   ```
+
+3. **Ask Claude Code to make changes**:
+   - "Add support for playlist extraction"
+   - "Improve error handling for rate limiting"
+   - "Add unit tests for the scraper module"
+   - "Update the InnerTube API implementation"
+
+4. **Claude Code will**:
+   - Understand the existing codebase structure
+   - Follow the established patterns and conventions
+   - Run tests to ensure changes don't break functionality
+   - Update documentation as needed
+   - Commit changes with descriptive messages
+
+### Why Claude Code?
+
+- **Context-aware**: Understands the entire codebase and maintains consistency
+- **Best practices**: Automatically follows TypeScript, MCP, and npm conventions
+- **Test-driven**: Ensures changes are tested and documented
+- **Efficient**: Reduces development time from hours to minutes
+
+### Example Claude Code Session
+
+```
+You: "Add a feature to download video thumbnails"
+
+Claude Code: I'll add thumbnail download functionality to the MCP server.
+[Claude Code analyzes the codebase, implements the feature, adds tests, 
+updates types, and creates a commit]
+
+You: "Now add documentation for the new feature"
+
+Claude Code: I'll update the README and add inline documentation.
+[Updates all relevant documentation files]
+```
 
 ## License
 
