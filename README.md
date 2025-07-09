@@ -137,7 +137,7 @@ Add the following to your Claude Desktop configuration file:
   "mcpServers": {
     "youtube-info": {
       "command": "npx",
-      "args": ["-y", "@limecooler/yt-info-mcp"]
+      "args": ["-y", "@limecooler/yt-info-mcp@latest"]
     }
   }
 }
@@ -160,7 +160,17 @@ Add the following to your Claude Desktop configuration file:
 
 To use this MCP server with Claude Code:
 
-### Option 1: Global Configuration (For All Projects)
+### Option 1: Quick Setup Using CLI (Recommended)
+
+Simply run this command in your terminal:
+
+```bash
+claude mcp add yt-info-mcp -s user -- npx -y @limecooler/yt-info-mcp@latest
+```
+
+This automatically adds the YouTube Info MCP server to your global Claude Code configuration.
+
+### Option 2: Manual Global Configuration
 
 Add to your global Claude Code configuration file:
 
@@ -173,7 +183,7 @@ Add to your global Claude Code configuration file:
   "mcpServers": {
     "youtube-info": {
       "command": "npx",
-      "args": ["-y", "@limecooler/yt-info-mcp"]
+      "args": ["-y", "@limecooler/yt-info-mcp@latest"]
     }
   }
 }
@@ -181,7 +191,7 @@ Add to your global Claude Code configuration file:
 
 This makes the YouTube Info MCP server available in all your Claude Code sessions.
 
-### Option 2: Project-Specific Configuration
+### Option 3: Project-Specific Configuration
 
 Add to your Claude Code project configuration (`.claude/project.json`):
 
@@ -190,13 +200,13 @@ Add to your Claude Code project configuration (`.claude/project.json`):
   "mcpServers": {
     "youtube-info": {
       "command": "npx",
-      "args": ["-y", "@limecooler/yt-info-mcp"]
+      "args": ["-y", "@limecooler/yt-info-mcp@latest"]
     }
   }
 }
 ```
 
-### Option 3: Local Installation
+### Option 4: Local Installation
 
 If you've cloned the repository locally:
 
@@ -556,7 +566,12 @@ Claude Code: I'll update the README and add inline documentation.
 
 See [Releases](https://github.com/Limecooler/yt-video-info/releases) for a detailed version history.
 
-### Latest Version: v1.1.0
+### Latest Version: v1.1.1
+- 🔧 Fixed executable permissions for npx compatibility
+- 🐛 Resolved Claude Code connection error (MCP error -32000)
+- 📚 Added simple Claude Code CLI setup command
+
+### v1.1.0
 - 🐛 Fixed transcript fetching using YouTube's InnerTube API
 - ✨ Added Android client context for better reliability
 - 📚 Improved documentation with badges and better structure
