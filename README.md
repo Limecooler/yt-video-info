@@ -160,7 +160,28 @@ Add the following to your Claude Desktop configuration file:
 
 To use this MCP server with Claude Code:
 
-### Option 1: Using npx (Recommended)
+### Option 1: Global Configuration (For All Projects)
+
+Add to your global Claude Code configuration file:
+
+**Configuration File Locations:**
+- **macOS/Linux**: `~/.claude/config.json`
+- **Windows**: `%USERPROFILE%\.claude\config.json`
+
+```json
+{
+  "mcpServers": {
+    "youtube-info": {
+      "command": "npx",
+      "args": ["-y", "@limecooler/yt-info-mcp"]
+    }
+  }
+}
+```
+
+This makes the YouTube Info MCP server available in all your Claude Code sessions.
+
+### Option 2: Project-Specific Configuration
 
 Add to your Claude Code project configuration (`.claude/project.json`):
 
@@ -175,7 +196,7 @@ Add to your Claude Code project configuration (`.claude/project.json`):
 }
 ```
 
-### Option 2: Local Installation
+### Option 3: Local Installation
 
 If you've cloned the repository locally:
 
