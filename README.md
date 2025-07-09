@@ -16,6 +16,7 @@ A lightweight MCP server that extracts YouTube video metadata and transcripts th
 - [Comparison with Alternatives](#comparison-with-alternatives)
 - [Installation](#installation)
 - [Claude Desktop Configuration](#claude-desktop-configuration)
+- [Claude Code Configuration](#claude-code-configuration)
 - [Usage](#usage)
 - [API Reference](#api-reference)
 - [Response Format](#response-format)
@@ -85,9 +86,15 @@ This approach is more reliable than direct caption URL fetching because it mimic
 
 ## Installation
 
+> **Note**: Installation is not necessary if you're using this with Claude Desktop or Claude Code. See [Claude Desktop Configuration](#claude-desktop-configuration) or [Claude Code Configuration](#claude-code-configuration) below.
+
 ### Option 1: Direct Usage with npx (Recommended)
 
-No installation needed! You can run the server directly using npx.
+No installation needed! You can run the server directly using npx:
+
+```bash
+npx @limecooler/yt-info-mcp
+```
 
 ### Option 2: Install from npm
 
@@ -147,6 +154,49 @@ Add the following to your Claude Desktop configuration file:
     }
   }
 }
+```
+
+## Claude Code Configuration
+
+To use this MCP server with Claude Code:
+
+### Option 1: Using npx (Recommended)
+
+Add to your Claude Code project configuration (`.claude/project.json`):
+
+```json
+{
+  "mcpServers": {
+    "youtube-info": {
+      "command": "npx",
+      "args": ["-y", "@limecooler/yt-info-mcp"]
+    }
+  }
+}
+```
+
+### Option 2: Local Installation
+
+If you've cloned the repository locally:
+
+```json
+{
+  "mcpServers": {
+    "youtube-info": {
+      "command": "node",
+      "args": ["./path/to/yt-video-info/dist/index.js"]
+    }
+  }
+}
+```
+
+Once configured, you can use the tool in Claude Code:
+
+```
+User: Get information about YouTube video dQw4w9WgXcQ
+
+Claude Code: I'll fetch the video information using the YouTube Info MCP server.
+[Uses the MCP tool to retrieve video metadata and transcript]
 ```
 
 ## Usage
